@@ -12,8 +12,15 @@ services:
     - POSTGRES_DB=postgres
     - PGDATA=/var/lib/postgresql/data/pgdata
   app:
-    image: odoo:14.0
+    build: .
+    image: odoo-keluarga-jd:latest
+#    image: odoo:14.0
 #    command: bash -c "pip3 install ipdb && pip3 install wheel"
+    environment:
+    - HOST=db
+    - PORT=5432
+    - USER=odoo
+    - PASSWORD=odoo
     depends_on:
       - db
     expose:
@@ -24,8 +31,9 @@ services:
 #      - "8002:8002/tcp"
 #      - "8069:8069/tcp"
 #      - "8071:8071/tcp"
+#      - "8072:8072/tcp"
     volumes:
-      - app-data:/var/lib/odoo
+      - ./data/app/files:/var/lib/odoo
       - ./data/app/config:/etc/odoo
       - ./data/app/custom_addons:/mnt/extra-addons
   webserver:
