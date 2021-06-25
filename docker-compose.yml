@@ -48,6 +48,29 @@ services:
     ports:
       - "80:80"
       - "443:443"
+  agent:
+    image: portainer/agent
+    environment:
+      AGENT_CLUSTER_ADDR: tasks.agent
+      AGENT_PORT: 9001
+      LOG_LEVEL: debug
+    ports:
+      - "9001:9001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+  portainer:
+    #to connect
+    #open your browser, go to domain:9000
+    #connect to agent:9001
+    image: portainer/portainer
+    ports:
+      - "9000:9000"
+      - "8000:8000"
 volumes:
   db-data:
     driver: local
