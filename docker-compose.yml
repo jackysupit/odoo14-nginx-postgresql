@@ -1,0 +1,47 @@
+version: '3'
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - ./data/db:/data_db
+    ports:
+      - 5432:5432/tcp
+    environment:
+    - POSTGRES_PASSWORD=odoo
+    - POSTGRES_USER=odoo
+    - POSTGRES_DB=postgres
+    - PGDATA=/var/lib/postgresql/data/pgdata
+  app:
+    image: odoo:14.0
+#    command: bash -c "pip3 install ipdb && pip3 install wheel"
+    depends_on:
+      - db
+    expose:
+      - 8001
+      - 8002
+#    ports:
+#      - "8001:8001/tcp"
+#      - "8002:8002/tcp"
+#      - "8069:8069/tcp"
+#      - "8071:8071/tcp"
+    volumes:
+      - app-data:/var/lib/odoo
+      - ./data/app/config:/etc/odoo
+      - ./data/app/custom_addons:/mnt/extra-addons
+  webserver:
+    image: nginx:alpine
+    restart: unless-stopped
+    depends_on:
+      - app
+    volumes:
+      - ./data/nginx/conf.d:/etc/nginx/conf.d
+      - ./data/nginx/logs:/var/log/nginx
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+volumes:
+  db-data:
+    driver: local
+  app-data:
+    driver: local
