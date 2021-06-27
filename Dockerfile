@@ -1,5 +1,5 @@
 FROM debian:buster-slim
-MAINTAINER Odoo S.A. <info@odoo.com>
+MAINTAINER Jacky supit <jsupit@gmail.com>
 
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 
@@ -91,6 +91,7 @@ RUN set -x; \
         python3-ipdb \
         procps \
         net-tools \
+        telnet \
         nano
 
 RUN pip3 install pillow

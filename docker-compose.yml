@@ -10,10 +10,10 @@ services:
     - POSTGRES_PASSWORD=odoo
     - POSTGRES_USER=odoo
     - POSTGRES_DB=postgres
-    - PGDATA=/var/lib/postgresql/data/pgdata
+    - PGDATA=/data_db
   app:
     build: .
-    image: odoo-keluarga-jd:latest
+    image: odoo14:latest
     environment:
     - HOST=db
     - PORT=5432
@@ -34,12 +34,9 @@ services:
       #this is your project folder, you can put it anywhere and put the full path here
       #as is mine is odooKeluargaJD
       #you need to set this your custom container folder into the /data/app/config/odoo.conf
-      - /home/jeki/work/docker/odooDocker/odooKeluargaJD:/odooKeluargaJD
+      - /home/jeki/work/docker/odooDocker/odooKeluargaJD:/mnt/extra-addons
       - ./data/app/files:/var/lib/odoo
       - ./data/app/config:/etc/odoo
-      - ./data/app/custom_addons:/mnt/extra-addons
-      #this is the odoo source code
-#      - /opt/odoo/odoo14:/opt/odoo/odoo14
   webserver:
     image: nginx:alpine
     restart: unless-stopped
