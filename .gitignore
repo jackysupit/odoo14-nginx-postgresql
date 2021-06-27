@@ -1,1 +1,4 @@
 .idea/*
+data/app/files/*
+data/app/logs/*
+data/nginx/logs/*

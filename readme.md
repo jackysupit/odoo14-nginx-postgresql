@@ -1,6 +1,9 @@
-Run sudo chmod -R 777 data/app/files
+Run sudo chmod -R 777 data/app/files so odoo can put the files needed there
 
 Run docker-compose up -d
+or 
+Run docker-compose up -d --remove-orphans --build 
+
 
 Generate a module docker exec -d odoo-test_web_1 /usr/bin/odoo scaffold openacademy /mnt/extra-addons && sudo chown -R pavel:pavel addons/openacademy (pavel is a my user . If we don't change an owner we will not be able to edit a source code outside the container)
 

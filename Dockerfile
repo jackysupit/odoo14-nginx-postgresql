@@ -29,12 +29,18 @@ RUN apt-get update && \
         python3-vobject \
         python3-watchdog \
         python3-xlrd \
-        python3-xlwt \
+#        python3-xlwt \
         xz-utils \
-    && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
-    && echo 'ea8277df4297afc507c61122f3c349af142f31e5 wkhtmltox.deb' | sha1sum -c - \
-    && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
-    && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
+        libjpeg62-turbo-dev
+
+#RUN curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.buster_amd64.deb \
+#    && echo 'ea8277df4297afc507c61122f3c349af142f31e5 wkhtmltox.deb' | sha1sum -c - \
+#    && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
+#    && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
+
+#RUN dpkg -i ./lib/wkhtmltox.deb
+#RUN rm -rf /var/lib/apt/lists/* wkhtmltox.deb
+RUN rm -rf /var/lib/apt/lists/*
 
 ###########################Tambahan - jeki start
 RUN apt-get update && \
@@ -84,6 +90,7 @@ RUN set -x; \
         python3-xlrd \
         python3-ipdb \
         procps \
+        net-tools \
         nano
 
 RUN pip3 install pillow
@@ -94,6 +101,7 @@ RUN pip3 install python3-cnab
 RUN pip3 install python3-boleto
 #RUN pip3 install xmlsec
 RUN pip3 install lxml
+RUN pip3 install xlwt
 RUN pip3 install pycnab240
 
 ###########################Tambahan - jeki end
@@ -120,7 +128,7 @@ RUN npm install -g rtlcss
 ENV ODOO_VERSION 14.0
 ARG ODOO_RELEASE=20210618
 ARG ODOO_SHA=261431b2bcb6d64751560cbd4dd98a9d98863e0c
-RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/odoo_${ODOO_VERSION}.${ODOO_RELEASE}_all.deb \
+RUN curl -o odoo.deb -sSL https://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/odoo_${ODOO_VERSION}.${ODOO_RELEASE}_all.deb \
     && echo "${ODOO_SHA} odoo.deb" | sha1sum -c - \
     && apt-get update \
     && apt-get -y install --no-install-recommends ./odoo.deb \
@@ -129,7 +137,6 @@ RUN curl -o odoo.deb -sSL http://nightly.odoo.com/${ODOO_VERSION}/nightly/deb/od
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
 COPY ./data/app/config/odoo.conf /etc/odoo/
-#COPY ./odoo.conf /etc/odoo/
 
 # Set permissions and Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
 RUN chown odoo /etc/odoo/odoo.conf \
